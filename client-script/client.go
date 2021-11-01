@@ -7,7 +7,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "github.com/fwani/gRPC-Test/server-script/sumfuncs"
+	pb "github.com/fwani/gRPC-Test/server-script/aggfuncs"
 )
 
 func main() {
