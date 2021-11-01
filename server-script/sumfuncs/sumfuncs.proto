@@ -1,17 +1,23 @@
+// file name: aggfunc.proto
+
+// proto3 버전 사용
 syntax = "proto3";
 
+// ...?
 package proto;
 option go_package = "proto/agg";
 
-service gRPCFuncsList {
-    rpc sum (SumArgs) returns (SumReturns);
+// 함수 리스트
+service gRPCRouteFuncs {
+    rpc sum (InputArgsOfBinaryFunc) returns (ReturnValue);  // rpc protocol 정의, sum 함수 정의
+    rpc multiply (InputArgsOfBinaryFunc) returns (ReturnValue);  // rpc protocol 정의, multiply 함수 정의
 }
 
-message SumArgs {
-    int32 value1 = 1;
+message InputArgsOfBinaryFunc {
+    int32 value1 = 1;  // 숫자는 serialize 순서인듯
     int32 value2 = 2;
 }
 
-message SumReturns {
+message ReturnValue {
     int32 value = 1;
 }

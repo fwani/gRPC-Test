@@ -14,86 +14,122 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// GRPCFuncsListClient is the client API for GRPCFuncsList service.
+// GRPCRouteFuncsClient is the client API for GRPCRouteFuncs service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GRPCFuncsListClient interface {
-	Sum(ctx context.Context, in *SumArgs, opts ...grpc.CallOption) (*SumReturns, error)
+type GRPCRouteFuncsClient interface {
+	Sum(ctx context.Context, in *InputArgsOfBinaryFunc, opts ...grpc.CallOption) (*ReturnValue, error)
+	Multiply(ctx context.Context, in *InputArgsOfBinaryFunc, opts ...grpc.CallOption) (*ReturnValue, error)
 }
 
-type gRPCFuncsListClient struct {
+type gRPCRouteFuncsClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGRPCFuncsListClient(cc grpc.ClientConnInterface) GRPCFuncsListClient {
-	return &gRPCFuncsListClient{cc}
+func NewGRPCRouteFuncsClient(cc grpc.ClientConnInterface) GRPCRouteFuncsClient {
+	return &gRPCRouteFuncsClient{cc}
 }
 
-func (c *gRPCFuncsListClient) Sum(ctx context.Context, in *SumArgs, opts ...grpc.CallOption) (*SumReturns, error) {
-	out := new(SumReturns)
-	err := c.cc.Invoke(ctx, "/proto.gRPCFuncsList/sum", in, out, opts...)
+func (c *gRPCRouteFuncsClient) Sum(ctx context.Context, in *InputArgsOfBinaryFunc, opts ...grpc.CallOption) (*ReturnValue, error) {
+	out := new(ReturnValue)
+	err := c.cc.Invoke(ctx, "/proto.gRPCRouteFuncs/sum", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GRPCFuncsListServer is the server API for GRPCFuncsList service.
-// All implementations must embed UnimplementedGRPCFuncsListServer
+func (c *gRPCRouteFuncsClient) Multiply(ctx context.Context, in *InputArgsOfBinaryFunc, opts ...grpc.CallOption) (*ReturnValue, error) {
+	out := new(ReturnValue)
+	err := c.cc.Invoke(ctx, "/proto.gRPCRouteFuncs/multiply", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// GRPCRouteFuncsServer is the server API for GRPCRouteFuncs service.
+// All implementations must embed UnimplementedGRPCRouteFuncsServer
 // for forward compatibility
-type GRPCFuncsListServer interface {
-	Sum(context.Context, *SumArgs) (*SumReturns, error)
-	mustEmbedUnimplementedGRPCFuncsListServer()
+type GRPCRouteFuncsServer interface {
+	Sum(context.Context, *InputArgsOfBinaryFunc) (*ReturnValue, error)
+	Multiply(context.Context, *InputArgsOfBinaryFunc) (*ReturnValue, error)
+	mustEmbedUnimplementedGRPCRouteFuncsServer()
 }
 
-// UnimplementedGRPCFuncsListServer must be embedded to have forward compatible implementations.
-type UnimplementedGRPCFuncsListServer struct {
+// UnimplementedGRPCRouteFuncsServer must be embedded to have forward compatible implementations.
+type UnimplementedGRPCRouteFuncsServer struct {
 }
 
-func (UnimplementedGRPCFuncsListServer) Sum(context.Context, *SumArgs) (*SumReturns, error) {
+func (UnimplementedGRPCRouteFuncsServer) Sum(context.Context, *InputArgsOfBinaryFunc) (*ReturnValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
 }
-func (UnimplementedGRPCFuncsListServer) mustEmbedUnimplementedGRPCFuncsListServer() {}
+func (UnimplementedGRPCRouteFuncsServer) Multiply(context.Context, *InputArgsOfBinaryFunc) (*ReturnValue, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Multiply not implemented")
+}
+func (UnimplementedGRPCRouteFuncsServer) mustEmbedUnimplementedGRPCRouteFuncsServer() {}
 
-// UnsafeGRPCFuncsListServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GRPCFuncsListServer will
+// UnsafeGRPCRouteFuncsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GRPCRouteFuncsServer will
 // result in compilation errors.
-type UnsafeGRPCFuncsListServer interface {
-	mustEmbedUnimplementedGRPCFuncsListServer()
+type UnsafeGRPCRouteFuncsServer interface {
+	mustEmbedUnimplementedGRPCRouteFuncsServer()
 }
 
-func RegisterGRPCFuncsListServer(s grpc.ServiceRegistrar, srv GRPCFuncsListServer) {
-	s.RegisterService(&GRPCFuncsList_ServiceDesc, srv)
+func RegisterGRPCRouteFuncsServer(s grpc.ServiceRegistrar, srv GRPCRouteFuncsServer) {
+	s.RegisterService(&GRPCRouteFuncs_ServiceDesc, srv)
 }
 
-func _GRPCFuncsList_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SumArgs)
+func _GRPCRouteFuncs_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InputArgsOfBinaryFunc)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GRPCFuncsListServer).Sum(ctx, in)
+		return srv.(GRPCRouteFuncsServer).Sum(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.gRPCFuncsList/sum",
+		FullMethod: "/proto.gRPCRouteFuncs/sum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GRPCFuncsListServer).Sum(ctx, req.(*SumArgs))
+		return srv.(GRPCRouteFuncsServer).Sum(ctx, req.(*InputArgsOfBinaryFunc))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// GRPCFuncsList_ServiceDesc is the grpc.ServiceDesc for GRPCFuncsList service.
+func _GRPCRouteFuncs_Multiply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InputArgsOfBinaryFunc)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GRPCRouteFuncsServer).Multiply(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.gRPCRouteFuncs/multiply",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GRPCRouteFuncsServer).Multiply(ctx, req.(*InputArgsOfBinaryFunc))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// GRPCRouteFuncs_ServiceDesc is the grpc.ServiceDesc for GRPCRouteFuncs service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var GRPCFuncsList_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.gRPCFuncsList",
-	HandlerType: (*GRPCFuncsListServer)(nil),
+var GRPCRouteFuncs_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.gRPCRouteFuncs",
+	HandlerType: (*GRPCRouteFuncsServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "sum",
-			Handler:    _GRPCFuncsList_Sum_Handler,
+			Handler:    _GRPCRouteFuncs_Sum_Handler,
+		},
+		{
+			MethodName: "multiply",
+			Handler:    _GRPCRouteFuncs_Multiply_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

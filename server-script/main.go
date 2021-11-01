@@ -10,13 +10,19 @@ import (
 )
 
 type server struct {
-	pb.UnimplementedGRPCFuncsListServer
+	pb.UnimplementedGRPCRouteFuncsServer
 }
 
-func (s *server) Sum(ctx context.Context, in *pb.SumArgs) (*pb.SumReturns, error) {
+func (s *server) Sum(ctx context.Context, in *pb.InputArgsOfBinaryFunc) (*pb.ReturnValue, error) {
 	result := in.Value1 + in.Value2
 	log.Printf("%d + %d = %d", in.Value1, in.Value2, result)
-	return &pb.SumReturns{Value: result}, nil
+	return &pb.ReturnValue{Value: result}, nil
+}
+
+func (s *server) Multiply(ctx context.Context, in *pb.InputArgsOfBinaryFunc) (*pb.ReturnValue, error) {
+	result := in.Value1 * in.Value2
+	log.Printf("%d * %d = %d", in.Value1, in.Value2, result)
+	return &pb.ReturnValue{Value: result}, nil
 }
 
 func main() {
@@ -26,7 +32,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	pb.RegisterGRPCFuncsListServer(s, &server{})
+	pb.RegisterGRPCRouteFuncsServer(s, &server{})
 	if err := s.Serve(listen); err != nil {
 		log.Fatalf("failed to serve: %v\n", err)
 	}
