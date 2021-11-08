@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	pb "github.com/fwani/gRPC-Test/server-script/aggfuncs"
+	"github.com/fwani/gRPC-Test/aggfuncs"
 	"log"
 	"net"
 
@@ -10,19 +10,19 @@ import (
 )
 
 type server struct {
-	pb.UnimplementedGRPCRouteFuncsServer
+	agg.UnimplementedGRPCRouteFuncsServer
 }
 
-func (s *server) Sum(_ context.Context, in *pb.InputArgsOfBinaryFunc) (*pb.ReturnValue, error) {
+func (s *server) Sum(_ context.Context, in *agg.InputArgsOfBinaryFunc) (*agg.ReturnValue, error) {
 	result := in.Value1 + in.Value2
 	log.Printf("%d + %d = %d", in.Value1, in.Value2, result)
-	return &pb.ReturnValue{Value: result}, nil
+	return &agg.ReturnValue{Value: result}, nil
 }
 
-func (s *server) Multiply(_ context.Context, in *pb.InputArgsOfBinaryFunc) (*pb.ReturnValue, error) {
+func (s *server) Multiply(_ context.Context, in *agg.InputArgsOfBinaryFunc) (*agg.ReturnValue, error) {
 	result := in.Value1 * in.Value2
 	log.Printf("%d * %d = %d", in.Value1, in.Value2, result)
-	return &pb.ReturnValue{Value: result}, nil
+	return &agg.ReturnValue{Value: result}, nil
 }
 
 func main() {
@@ -32,7 +32,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	pb.RegisterGRPCRouteFuncsServer(s, &server{})
+	agg.RegisterGRPCRouteFuncsServer(s, &server{})
 	if err := s.Serve(listen); err != nil {
 		log.Fatalf("failed to serve: %v\n", err)
 	}

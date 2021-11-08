@@ -133,5 +133,5 @@ var GRPCRouteFuncs_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "server-script/aggfuncs/aggfuncs.proto",
+	Metadata: "aggfuncs/aggfuncs.proto",
 }
